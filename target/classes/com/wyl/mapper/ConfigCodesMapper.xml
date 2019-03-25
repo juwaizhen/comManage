@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyl.mapper.ConfigCodesMapper">
+    
+	<select id="qryConfigCodes" parameterType="java.util.Map" resultType="com.wyl.entity.ConfigCodesVO" >
+		SELECT
+			C_ID 'id',
+			C_CODE 'code',
+			C_CODE_NAME 'codeName',
+			C_CODE_TYPE 'codeType',
+			C_COLUMN_NAME 'columnName',
+			C_TABLE_NAME 'tableName',
+			C_STATUS_CD 'statusCd',
+			C_CREATE_USER 'createUser',
+			C_CREATE_DATE 'createDate',
+			C_UPDATE_USER 'updateUser',
+			C_UPDATE_DATE 'updateDate'
+		FROM T_CONFIG_CODES
+		WHERE C_STATUS_CD = '0'
+			AND C_COLUMN_NAME = #{columnName}
+			AND C_TABLE_NAME = #{tableName}
+			<if test="codeType != null and codeType != '' ">
+				AND C_CODE_TYPE = #{codeType}
+			</if>
+    </select>
+</mapper>

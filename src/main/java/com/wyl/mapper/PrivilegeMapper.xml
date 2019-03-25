@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyl.mapper.PrivilegeMapper">
+    
+    
+	<select id="qryPrivilegeListByUserId" parameterType="java.lang.String" resultType="com.wyl.entity.PrivilegeVO" >
+    	select p.C_ID 'id',
+			p.C_NAME 'name',
+			p.C_PAR_ID 'parId',
+			p.C_TYPE 'type',
+			p.C_URL 'url',
+			p.C_CREATE_USER 'createUser',
+			p.C_CREATE_DATE 'createDate',
+			p.C_UPDATE_USER 'updateUser',
+			p.C_UPDATE_DATE 'updateDate'
+		from t_privilege p,
+			t_user u,
+			t_role r,
+			t_rel_user_role r_ur,
+			t_rel_role_privile r_rp
+		where u.C_ID = r_ur.C_USER_ID
+			and r_ur.C_ROLE_ID = r.C_ID
+			and r_ur.C_ROLE_ID = r_rp.C_ROLE_ID
+			and r_rp.C_PRIVILEGE_ID = p.C_ID
+			and u.C_STATUS_CD = 0
+			and r.C_SATTUS_CD = 0
+			and u.C_ID =  #{id}
+    </select>
+</mapper>
