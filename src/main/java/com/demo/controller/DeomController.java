@@ -23,7 +23,7 @@ public class DeomController {
 	@RequestMapping("")
 	public String toInit(Model model){
 		String nickname = demoService.queryNickNameById("1");
-		model.addAttribute("nickname", nickname);
+		model.addAttribute("nickname", nickname);		//TODO gitHub提交测试
 		return INIT_PAGE;
 	}
 	
