@@ -24,7 +24,7 @@ public class DeomController {
 	public String toInit(Model model){
 		String nickname = demoService.queryNickNameById("1");
 		model.addAttribute("nickname", nickname);
-		return INIT_PAGE;
+		return INIT_PAGE;	//提交测试
 	}
 	
 }
