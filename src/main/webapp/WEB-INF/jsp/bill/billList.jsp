@@ -13,6 +13,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/common/showMessage.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/common/util.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/common/json2.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/common/common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/bill/billList.js"></script>
 </head>
 <body>
@@ -71,10 +72,9 @@
 				<div class="layui-inline">
                   <label class="layui-form-label">创建时间</label>
                   <div class="layui-input-inline">
-                    <input type="text" class="layui-input" id="createDateRange" placeholder=" ~ " readonly="readonly">
+                    <input type="text" class="layui-input dateRange" id="createDateRange" placeholder="请选择" readonly="readonly">
                   </div>
                 </div>
-                
 				<div class="layui-inline qryBtn">
 					<!-- <button class="layui-btn layuiadmin-btn-order" lay-submit="" lay-filter="LAY-app-order-search">
 						<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>

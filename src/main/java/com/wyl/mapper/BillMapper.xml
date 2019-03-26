@@ -41,11 +41,10 @@
 			<if test="createDateEnd != null and createDateEnd !='' ">
 				<![CDATA[ AND C_CREATE_DATE < #{createDateEnd}]]>
 			</if>
-			<if test="startNum != null and startNum !='' and endNum != null and endNum !='' ">
-				limit startNum,endNum
-			</if>
-			
 		</where>
+		<!-- <if test="startNum != null and startNum !='' and endNum != null and endNum !='' ">
+			limit #{startNum},#{endNum}
+		</if> -->
 	</sql>
 	
 	<select id="getBillCount" parameterType="java.util.Map" resultType="java.lang.Long" >
@@ -55,6 +54,6 @@
 	</select>
     
     <select id="getBillList" parameterType="java.util.Map" resultType="com.wyl.entity.BillVO" >
-		<include refid="billQryBase"></include>
+		<include refid="billQryBase"></include>limit #{startNum},#{endNum}
     </select>
 </mapper>
