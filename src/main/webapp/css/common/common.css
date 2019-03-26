@@ -118,15 +118,15 @@ a.a-yzm{display:inline-block;width:93px;height:23px;}
 .newsList li a:hover dl.newsDate .arrow{ border-left-color:#4284d7;}
 /*首页 end*/
 
-/*公共样式*/
-.bg-fff{background:#fff;}
 
 
+/*样式权重*/
 /*浮动*/
 .fl{float:left !important;}
 .fr{float:right !important;}
 
 /*间距*/
+.m0{margin:0 !important}
 .ml10{margin-left: 10px !important}
 .ml15{margin-left: 15px !important}
 .ml20{margin-left: 20px !important}
@@ -205,9 +205,11 @@ a.a-yzm{display:inline-block;width:93px;height:23px;}
 .pl10{padding-left: 10px !important;}
 .pr10{padding-right: 10px !important;}
 
-
+/* -------------背景色------------------- */
+.bg-white{ background-color: white !important; }
 
 .qryBtn{
 	margin-right: 100px !important;
 	float:right !important;
 }
+

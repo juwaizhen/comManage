@@ -16,7 +16,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/bill/billList.js"></script>
 </head>
 <body>
-	<div class="layui-card" name="billListDiv" id="billListDiv">
+	<div class="layui-card bgBorder minHeight" name="billListDiv" id="billListDiv">
 		<div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="app-content-workorder">
 			<div class="layui-form-item">
 				<div class="layui-inline">

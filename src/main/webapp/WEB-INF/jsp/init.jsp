@@ -49,13 +49,12 @@
 			<!-- 首页 -->
 			<%@ include file="homePage.jsp"%>
 		</div>
-		<div id="mainDiv" class="pl10 pb10" style="display:none">
+		<div id="mainDiv" style="display:none">
 			<!-- 主页 -->
-			<div class="layui-tab layui-tab-brief"  lay-allowClose="true" lay-filter="demo">
-				<ul class="layui-tab-title">
-				</ul>
-				<div class="layui-tab-content">
-				</div>
+			<div class="layui-tab layui-tab-brief m0"  lay-allowClose="true" lay-filter="demo">
+				<ul class="layui-tab-title pl10 bg-white"></ul>
+				 <!-- style="height: 100%; overflow: auto" -->
+				<div class="layui-tab-content" name="tabDiv"></div>
 			</div>  
 		</div>
 	</div>

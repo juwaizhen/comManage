@@ -12,7 +12,7 @@
 		}
 	</script>
 </head>
-<body class="bg-fff">
+<body class="bg-white">
 	<!-- <form action="login/doLogin" method="post">
 		账号： <input type="text" id="accNum" name="accNum" /><br />
 		密&nbsp;&nbsp;&nbsp;&nbsp;码: <input type="text" id="passWord" name="password" /><br />
