@@ -154,7 +154,7 @@ var Init = function(){
 	//网页尺寸变化事件
 	this.windResize = function(){
 		$(window).resize(function() {
-			var bodyDivH = $(window).height() -140;
+			var bodyDivH = $(window).height() -40;
 			$("#bodyDiv").css("height",bodyDivH+"px");
 		});
 	}
@@ -166,7 +166,7 @@ var Init = function(){
 var init = new Init();
 var element = layui.element;
 $(function() {
-	var bodyDivH = $(window).height() -140;
+	var bodyDivH = $(window).height() -40;
 	$("#bodyDiv").css("height",bodyDivH+"px");
 	
 	init.init();

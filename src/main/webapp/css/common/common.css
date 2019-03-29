@@ -83,6 +83,7 @@ a.a-yzm{display:inline-block;width:93px;height:23px;}
 /*首页 start*/
 .bgBorder{background: #fff;border:1px solid #dcdcdc;margin:10px;padding:10px 20px;}
 .minHeight{min-height: 600px;}
+.minHeight440{min-height: 440px;}
 .job{width: 520px;margin:10px auto;}
 .job dl{float: left; margin-right: 140px; text-align: center;font:14px/30px "微软雅黑"; cursor: pointer;}
 .job dl.last-child{margin-right:0;}
@@ -142,14 +143,24 @@ a.a-yzm{display:inline-block;width:93px;height:23px;}
 .mr5{margin-right:5px !important}
 .mr10{margin-right:10px !important}
 .mr30{margin-right:30px !important}
-.pr50{padding-right:50px !important}
-.pt0{padding-top: 0 !important;}
+
+/* 内边距 */
 .p0{padding: 0 !important;}
 .p20{padding: 20px !important;}
+.p15{padding: 15px !important;}
+
+.pt0{padding-top: 0 !important;}
 .pt10{padding-top: 10px !important;}
-.pl40{padding-left:40px !important}
+
 .pb10{padding-bottom:10px !important}
 .pb80{padding-bottom:80px !important}
+
+.pl10{padding-left: 10px !important;}
+.pl40{padding-left:40px !important}
+
+.pr10{padding-right: 10px !important;}
+.pr50{padding-right:50px !important}
+
 /*宽度*/
 .w60{width: 60px !important;}
 .w70{width: 70px !important;}
@@ -199,11 +210,6 @@ a.a-yzm{display:inline-block;width:93px;height:23px;}
 
 .clear{clear:both;height:0px;overflow: hidden;margin:0;padding:0;font-size:0}
 
-/* ------------------------------------ */
-.pt10{padding-top: 10px !important;}
-.pb10{padding-bottom: 10px !important;}
-.pl10{padding-left: 10px !important;}
-.pr10{padding-right: 10px !important;}
 
 /* -------------背景色------------------- */
 .bg-white{ background-color: white !important; }

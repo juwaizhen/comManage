@@ -58,7 +58,8 @@ pre {
 }
 body {
 	line-height:24px;
-	font:14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif
+	/* font:14px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif */
+	font:12px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif	/* mod by wangyl */
 }
 hr {
 	height:1px;
@@ -1275,7 +1276,8 @@ a cite {
 	border-bottom:1px solid #f6f6f6;
 	color:#333;
 	border-radius:2px 2px 0 0;
-	font-size:14px
+	/* font-size:14px */
+	font-size:12px	/* mod by wangyl */
 }
 
 /* add by wangyl */
@@ -1390,8 +1392,10 @@ a cite {
 }
 .layui-btn {
 	display:inline-block;
-	height:38px;
-	line-height:38px;
+	/* height:38px;
+	line-height:38px; */	/* mod by wangyl */
+	height:30px;
+	line-height:30px;
 	padding:0 18px;
 	background-color:#009688;
 	color:#fff;
@@ -1523,7 +1527,8 @@ a cite {
 	width:100%
 }
 .layui-input,.layui-select,.layui-textarea {
-	height:38px;
+	/* height:38px; */
+	height:30px;	/* mod by wangyl */
 	line-height:1.3;
 	line-height:38px\9;
 	border-width:1px;
@@ -1562,7 +1567,7 @@ a cite {
 	display:initial
 }
 .layui-form-item {
-	margin-bottom:15px;
+	/* margin-bottom:15px; */
 	clear:both;
 	*zoom:1
 }
@@ -1639,7 +1644,8 @@ a cite {
 	display:none;
 	position:absolute;
 	left:0;
-	top:42px;
+	/* top:42px; */
+	top:30px;	/* mod by wangyl */
 	padding:5px 0;
 	z-index:899;
 	min-width:100%;
@@ -3111,7 +3117,7 @@ body .layui-table-tips .layui-layer-content {
 	top:-2px\0/IE9
 }
 .layui-tab-content {
-	padding:10px
+	/* padding:10px */	/* mod by wangyl */
 }
 .layui-tab-title li .layui-tab-close {
 	position:relative;

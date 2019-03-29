@@ -17,8 +17,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/bill/billList.js"></script>
 </head>
 <body>
-	<div class="layui-card bgBorder minHeight" name="billListDiv" id="billListDiv">
-		<div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="app-content-workorder">
+	<div class="layui-card bgBorder minHeight440" name="billListDiv" id="billListDiv">
+		<div class="layui-form p15 " lay-filter="app-content-workorder">
 			<div class="layui-form-item">
 				<div class="layui-inline">
 					<label class="layui-form-label">账单标题</label>
@@ -75,18 +75,14 @@
                     <input type="text" class="layui-input dateRange" id="createDateRange" placeholder="请选择" readonly="readonly">
                   </div>
                 </div>
-				<div class="layui-inline qryBtn">
-					<!-- <button class="layui-btn layuiadmin-btn-order" lay-submit="" lay-filter="LAY-app-order-search">
-						<i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-					</button> -->
-					<button class="layui-btn  layui-btn-normal" name="billListQryBtn">
-						<i class="layui-icon layui-icon-search"></i>
-					</button>
+                <div style="text-align: center;">
+	                <button class="layui-btn layui-btn-normal" name="billListQryBtn">查询</button>
+	                <button class="layui-btn layui-btn-primary" name="resetBtn">重置</button>
 				</div>
 			</div>
 		</div>
-		<div class="layui-card-body">
-			<table class="layui-table" lay-filter="billListTable" id="billListTable"'>
+		<div class="">
+			<table class="layui-table m0" lay-filter="billListTable" id="billListTable"'>
 			<!-- <colgroup>
 				<col width="12%">
 				<col width="8%">

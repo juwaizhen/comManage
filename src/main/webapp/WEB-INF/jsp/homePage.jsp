@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-	<div class="bgBorder pr50" style="height: 100%; overflow: auto"> 
+	<div class="bgBorder pr50"> 
 	    <!--上班/休息/下班 begin-->
 	    <div class="job">
 	        <dl class="job-icon1">

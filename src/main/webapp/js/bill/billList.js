@@ -54,7 +54,6 @@ var BillList = function(){
 			elem: '#billListTable',
             url: CONTEXT_PATH+"/bill/getBillList",
             method:"post",
-//                , where:JSON2.stringify(param) //传参
             where:{param:JSON2.stringify(param)},
             cols: [[
             	{field: 'title', title: '标题', width: '12%', sort: true},
@@ -65,10 +64,9 @@ var BillList = function(){
             	{field: 'price', title: '金额', width: '8%'},
             	{field: 'statusCd', title: '状态', width: '8%'},
             	{field: 'createDate', title: '创建时间', width: '10%'},
-            	{field: 'remark', title: '备注', width: '22%'},
+            	{field: 'remark', title: '备注', width: '20%'},
             	{field: 'price', title: '操作', width: '8%',fixed: 'right', toolbar: '#barDemo'}
              ]],
-//             page: true,
              page:{
             	 layout	:	['count', 'prev', 'page', 'next', 'limit', 'skip'],
             	 theme	:	'#1E9FFF',
@@ -81,30 +79,7 @@ var BillList = function(){
                      }
                  }
              },
-             height: 430
-            /* done: function(res, curr, count){
-            	 var laypage = layui.laypage;
-                	debugger;
-                    //如果是异步请求数据方式，res即为你接口返回的信息。
-                    //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-                    laypage.render({
-                        elem:'#tabPage'
-                        ,count:count
-                        ,curr:curr
-//                        ,limit:limitcount
-//                        ,layout: ['prev', 'page', 'next', 'skip','count','limit']
-                    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
-		  			,theme: '#1E9FFF'
-                        ,jump:function (obj,first) {
-                        	debugger;
-                            if(!first){
-                                curnum = obj.curr;
-                                limitcount = obj.limit;
-                                productsearch(productGroupId,curnum,limitcount);
-                            }
-                        }
-                    })
-                }*/
+             height: 280
         })
 
 	}
