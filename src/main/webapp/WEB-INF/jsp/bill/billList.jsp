@@ -83,62 +83,16 @@
 		</div>
 		<div class="">
 			<table class="layui-table m0" lay-filter="billListTable" id="billListTable"'>
-			<!-- <colgroup>
-				<col width="12%">
-				<col width="8%">
-				<col width="8%">
-				<col width="8%">
-				<col width="8%">
-				<col width="8%">
-				<col width="8%">
-				<col width="10%">
-				<col width="22%">
-				<col width="8%">
-				<col>
-			</colgroup>
-			<thead>
-				<tr>
-					<th>标题</th>
-					<th>收支类型</th>
-					<th>资金用途</th>
-					<th>使用人</th>
-					<th>支付方式</th>
-					<th>金额</th>
-					<th>状态</th>
-					<th>创建时间</th>
-					<th>备注</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			<tbody name="billListTbody">
-				<tr>
-					<td>贤心</td>
-					<td>2016-11-29</td>
-					<td>s洒水车</td>
-					<td>s洒水车</td>
-					<td>s洒水车</td>
-					<td>贤心</td>
-					<td>2016-11-29</td>
-					<td>sa</td>
-					<td>人生就像是一场修行</td>
-					<td>2016-11-29</td>
-				</tr>
-				<tr>
-					<td>许闲心</td>
-					<td>2016-11-28</td>
-					<td>123</td>
-					<td>许闲心</td>
-					<td>2016-11-28</td>
-					<td>s洒水车</td>
-					<td>s洒水车</td>
-					<td>于…</td>
-					<td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
-					<td>2016-11-28</td>
-				</tr>
-			</tbody> -->
-		</table>
-		<div id="tabPage"></div>
+			</table>
+			<div id="tabPage"></div>
 		</div>
+		<script type="text/html" id="barDemo">
+			<div class="layui-btn-container">
+				<a lay-event="edit" class="a_edit layui-icon layui-icon-edit mr10" title="修改"></a>
+				<a lay-event="del" class="a_del layui-icon layui-icon-delete" title="删除"></a>
+			</div>
+		</script>
+
 	</div>
 </body>
 

@@ -55,6 +55,8 @@ var BillList = function(){
             url: CONTEXT_PATH+"/bill/getBillList",
             method:"post",
             where:{param:JSON2.stringify(param)},
+            size: 'sm',
+            loading: true,
             cols: [[
             	{field: 'title', title: '标题', width: '12%', sort: true},
             	{field: 'type', title: '收支类型', width: '8%'},
@@ -67,6 +69,8 @@ var BillList = function(){
             	{field: 'remark', title: '备注', width: '20%'},
             	{field: 'price', title: '操作', width: '8%',fixed: 'right', toolbar: '#barDemo'}
              ]],
+//             toolbar:true,
+//             toolbar: '#barDemo',
              page:{
             	 layout	:	['count', 'prev', 'page', 'next', 'limit', 'skip'],
             	 theme	:	'#1E9FFF',
@@ -79,11 +83,36 @@ var BillList = function(){
                      }
                  }
              },
-             height: 280
-        })
-
+//             height: 280
+        });
+		
+		//表头的操作
+		/*table.on('toolbar(billListTable)', function(obj){
+			switch(obj.event){
+		    case 'add':
+		      layer.msg('添加');
+		    break;
+		  };
+        });*/
+		
+		//表格后面的操作
+		 table.on('tool(billListTable)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+			    var data = obj.data //获得当前行数据
+			    ,layEvent = obj.event; //获得 lay-event 对应的值
+			    if(layEvent === 'edit'){
+			    	alert(222);
+			      layer.msg('查看操作');
+			    } else if(layEvent === 'del'){
+			      layer.confirm('真的删除行么', function(index){
+			        obj.del(); //删除对应行（tr）的DOM结构
+			        layer.close(index);
+			        //向服务端发送删除指令
+			      });
+			    } else if(layEvent === 'edit'){
+			      layer.msg('编辑操作');
+			    }
+			  });
 	}
-	
 	
 };
 
