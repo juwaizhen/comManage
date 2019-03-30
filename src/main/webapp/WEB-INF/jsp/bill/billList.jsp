@@ -1,19 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/jsp/common/includeFile.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>账单查询</title>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/common/common.css" />
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/layui/css/layui.css" />
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.12.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/layui/layui.all.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/common/constant.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/common/showMessage.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/common/util.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/common/json2.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/common/common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/bill/billList.js"></script>
 </head>
 <body>
@@ -29,44 +20,25 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">收支类型</label>
 					<div class="layui-input-inline">
-						<select name="billType">
-					        <!-- <option value=""></option>
-					        <option value="0">收入</option>
-					        <option value="1">支出</option> -->
-						</select>
+						<select name="billType"></select>
 					</div>
 				</div>
 				<div class="layui-inline">
 					<label class="layui-form-label">用途</label>
 					<div class="layui-input-inline">
-						<select name="useFor">
-					        <!-- <option value=""></option>
-					        <option value="0">学习</option>
-					        <option value="1">日常</option> -->
-						</select>
+						<select name="useFor"></select>
 					</div>
 				</div>
 				<div class="layui-inline">
 					<label class="layui-form-label">支付方式</label>
 					<div class="layui-input-inline">
-						<select name="moneyType">
-					        <!-- <option value=""></option>
-					        <option value="0">现金</option>
-					        <option value="1">银行卡</option>
-					        <option value="2">微信</option>
-					        <option value="3">支付宝</option> -->
-						</select>
+						<select name="moneyType"></select>
 					</div>
 				</div>
 				<div class="layui-inline">
 					<label class="layui-form-label">状态</label>
 					<div class="layui-input-inline">
-						<select name="billStatus">
-					        <!-- <option value=""></option>
-					        <option value="0">待确认</option>
-					        <option value="1">已确认</option>
-					        <option value="2">作废</option> -->
-						</select>
+						<select name="billStatus"></select>
 					</div>
 				</div>
 				<div class="layui-inline">
