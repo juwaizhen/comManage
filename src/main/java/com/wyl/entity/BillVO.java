@@ -13,10 +13,14 @@ public class BillVO  implements Serializable{
 	private String title;
 	private String price;
 	private String type;
+	private String typeName;
 	private String useFor;
+	private String useForName;
 	private String usePerson;
 	private String moneyType;
+	private String moneyTypeName;
 	private String statusCd;
+	private String statusCdName;
 	private String remark;
 	private String createUser;
 	private String createDate;
@@ -99,6 +103,30 @@ public class BillVO  implements Serializable{
 	}
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
+	}
+	public String getTypeName() {
+		return typeName;
+	}
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+	public String getUseForName() {
+		return useForName;
+	}
+	public void setUseForName(String useForName) {
+		this.useForName = useForName;
+	}
+	public String getMoneyTypeName() {
+		return moneyTypeName;
+	}
+	public void setMoneyTypeName(String moneyTypeName) {
+		this.moneyTypeName = moneyTypeName;
+	}
+	public String getStatusCdName() {
+		return statusCdName;
+	}
+	public void setStatusCdName(String statusCdName) {
+		this.statusCdName = statusCdName;
 	}
 	
 	

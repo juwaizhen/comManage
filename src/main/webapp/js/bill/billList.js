@@ -59,12 +59,12 @@ var BillList = function(){
             loading: true,
             cols: [[
             	{field: 'title', title: '标题', width: '12%', sort: true},
-            	{field: 'type', title: '收支类型', width: '8%'},
-            	{field: 'useFor', title: '资金用途', width: '8%'},
+            	{field: 'typeName', title: '收支类型', width: '8%'},
+            	{field: 'useForName', title: '资金用途', width: '8%'},
             	{field: 'usePerson', title: '使用人', width: '8%'},
-            	{field: 'moneyType', title: '支付方式', width: '8%'},
+            	{field: 'moneyTypeName', title: '支付方式', width: '8%'},
             	{field: 'price', title: '金额', width: '8%'},
-            	{field: 'statusCd', title: '状态', width: '8%'},
+            	{field: 'statusCdName', title: '状态', width: '8%'},
             	{field: 'createDate', title: '创建时间', width: '10%'},
             	{field: 'remark', title: '备注', width: '20%'},
             	{field: 'price', title: '操作', width: '8%',fixed: 'right', toolbar: '#barDemo'}

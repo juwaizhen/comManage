@@ -5,41 +5,45 @@
     
 	<sql id="billQryBase">
 		SELECT
-			C_ID 'id',
-			C_TITLE 'title',
-			C_PRICE 'price',
-			C_TYPE 'type',
-			C_USE_FOR 'useFor',
-			C_USE_PERSON 'usePerson',
-			C_MONEY_TYPE 'moneyType',
-			C_STATUS_CD 'statusCd',
-			C_REMARK 'remark',
-			C_CREATE_USER 'createUser',
-			C_CREATE_DATE 'createDate',
-			C_UPDATE_USER 'updateUser',
-			C_UPDATE_DATE 'updateDate'
-		FROM T_BILL
+			T.C_ID 'id',
+			T.C_TITLE 'title',
+			T.C_PRICE 'price',
+			T.C_TYPE 'type',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_TYPE' AND C.C_CODE = T.C_TYPE) 'typeName',
+			T.C_USE_FOR 'useFor',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_USE_FOR' AND C.C_CODE = T.C_USE_FOR) 'useForName',
+			T.C_USE_PERSON 'usePerson',
+			T.C_MONEY_TYPE 'moneyType',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_MONEY_TYPE' AND C.C_CODE = T.C_MONEY_TYPE) 'moneyTypeName',
+			T.C_STATUS_CD 'statusCd',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_STATUS_CD' AND C.C_CODE = T.C_STATUS_CD) 'statusCdName',
+			T.C_REMARK 'remark',
+			T.C_CREATE_USER 'createUser',
+			T.C_CREATE_DATE 'createDate',
+			T.C_UPDATE_USER 'updateUser',
+			T.C_UPDATE_DATE 'updateDate'
+		FROM T_BILL T
 		<where>
 			<if test="title != null and title !='' ">
-				AND C_TITLE LIKE CONCAT(CONCAT('%',#{title}),'%')
+				AND T.C_TITLE LIKE CONCAT(CONCAT('%',#{title}),'%')
 			</if>
 			<if test="type != null and type !='' ">
-				AND C_TYPE = #{type}
+				AND T.C_TYPE = #{type}
 			</if>
 			<if test="useFor != null and useFor !='' ">
-				AND C_USE_FOR = #{useFor}
+				AND T.C_USE_FOR = #{useFor}
 			</if>
 			<if test="moneyType != null and moneyType !='' ">
-				AND C_MONEY_TYPE = #{moneyType}
+				AND T.C_MONEY_TYPE = #{moneyType}
 			</if>
 			<if test="statusCd != null and statusCd !='' ">
-				AND C_STATUS_CD = #{statusCd}
+				AND T.C_STATUS_CD = #{statusCd}
 			</if>
 			<if test="createDateStart != null and createDateStart !='' ">
-				<![CDATA[ AND C_CREATE_DATE >= createDateStart]]>
+				<![CDATA[ AND T.C_CREATE_DATE >= createDateStart]]>
 			</if>
 			<if test="createDateEnd != null and createDateEnd !='' ">
-				<![CDATA[ AND C_CREATE_DATE < #{createDateEnd}]]>
+				<![CDATA[ AND T.C_CREATE_DATE < #{createDateEnd}]]>
 			</if>
 		</where>
 		<!-- <if test="startNum != null and startNum !='' and endNum != null and endNum !='' ">
