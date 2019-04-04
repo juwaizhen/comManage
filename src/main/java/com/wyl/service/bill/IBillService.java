@@ -30,4 +30,15 @@ public interface IBillService {
 	* @throws
 	 */
 	List<BillVO> getBillList(Map<String,Object> map);
+	
+	/**
+	 * 
+	* @Title: updateBillById 
+	* @Description: 修改账单信息
+	* @author wangyl
+	* @return  参数说明 
+	* @return 
+	* @throws
+	 */
+	void updateBillById(Map<String,Object> map);
 }

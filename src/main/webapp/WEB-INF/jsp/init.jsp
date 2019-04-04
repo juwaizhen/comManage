@@ -1,20 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/jsp/common/includeFile.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF8">
 <title>首页</title>
-<link rel="stylesheet" type="text/css" href="css/common/common.css" />
-<!-- <link rel="stylesheet" type="text/css" href="js/layer/css/layui.css" /> -->
-<link rel="stylesheet" type="text/css" href="js/layui/css/layui.css" />
-<script type="text/javascript" src="js/jquery-1.12.1.min.js"></script>
-<!-- <script type="text/javascript" src="js/layer/layui.all.js"></script> -->
-<script type="text/javascript" src="js/layui/layui.all.js"></script>
-<script type="text/javascript" src="js/common/common.js"></script>
-<script type="text/javascript" src="js/common/showMessage.js"></script>
-<script type="text/javascript" src="js/common/util.js"></script>
-<script type="text/javascript" src="js/common/constant.js"></script>
+
 <script type="text/javascript" src="js/common/tabUtil.js"></script>
 <script type="text/javascript" src="js/init.js"></script>
 </head>

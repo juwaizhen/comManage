@@ -25,5 +25,10 @@ public class BillServiceImpl implements IBillService {
 		return billMapper.getBillList(map);
 	}
 	
+	@Override
+	public void updateBillById(Map<String,Object> map) {
+		billMapper.updateBillById(map);
+	}
+	
 
 }

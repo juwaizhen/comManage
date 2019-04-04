@@ -1,4 +1,5 @@
-var laydate = layui.laydate;
+var layDate = layui.laydate;
+var layForm = layui.form; 
 $(function(){
 //	userxx-头部鼠标经过下拉
 	$(".user").hover(function(){
@@ -10,14 +11,14 @@ $(function(){
 	
 //	绑定所有的时间插件
 	lay('.date').each(function(){
-		laydate.render({
+		layDate.render({
 			elem: this
 		});
 	});
 	
 	//日期范围（日）选择-laydate
 	lay('.dateRange').each(function(){
-		laydate.render({
+		layDate.render({
 			elem: this,
 			range: true
 //			type: 'month',//以月为单位

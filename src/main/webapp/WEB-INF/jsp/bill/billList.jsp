@@ -60,6 +60,7 @@
 		</div>
 		<script type="text/html" id="barDemo">
 			<div class="layui-btn-container">
+				<a lay-event="detail" class="a_detail layui-icon layui-icon-list mr10" title="详情"></a>
 				<a lay-event="edit" class="a_edit layui-icon layui-icon-edit mr10" title="修改"></a>
 				<a lay-event="del" class="a_del layui-icon layui-icon-delete" title="删除"></a>
 			</div>

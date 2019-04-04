@@ -24,7 +24,7 @@ var BillList = function(){
 //		初始化账单状态
 		util.initConfigCodesSelect(currSelector.find("select[name=billStatus]"),"C_STATUS_CD","T_BILL","TYPE1");
 		
-		billListForm.render();//表单样式修改
+		layForm.render();//表单样式修改
 	}
 	
 	//初始化绑定事件
@@ -58,6 +58,7 @@ var BillList = function(){
             size: 'sm',
             loading: true,
             cols: [[
+            	{field: 'id', title: 'ID', width: '12%', hide: true},
             	{field: 'title', title: '标题', width: '12%', sort: true},
             	{field: 'typeName', title: '收支类型', width: '8%'},
             	{field: 'useForName', title: '资金用途', width: '8%'},
@@ -96,30 +97,48 @@ var BillList = function(){
         });*/
 		
 		//表格后面的操作
-		 table.on('tool(billListTable)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-			    var data = obj.data //获得当前行数据
-			    ,layEvent = obj.event; //获得 lay-event 对应的值
-			    if(layEvent === 'edit'){
-			    	alert(222);
-			      layer.msg('查看操作');
-			    } else if(layEvent === 'del'){
-			      layer.confirm('真的删除行么', function(index){
-			        obj.del(); //删除对应行（tr）的DOM结构
-			        layer.close(index);
-			        //向服务端发送删除指令
-			      });
-			    } else if(layEvent === 'edit'){
-			      layer.msg('编辑操作');
-			    }
-			  });
+		table.on('tool(billListTable)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+			var data = obj.data, //获得当前行数据
+			layEvent = obj.event; //获得 lay-event 对应的值
+			
+			var billId = data.id;
+		    if(layEvent === 'detail'){
+		    	temp.showView(billId)
+		    }else if(layEvent === 'edit'){
+		    	temp.showEdit(billId);
+		    } else if(layEvent === 'del'){
+		    	layer.confirm('确定删除该数据吗', function(index){
+		        obj.del(); //删除对应行（tr）的DOM结构
+		        layer.close(index);
+		        //向服务端发送删除指令
+		      });
+		    }
+		});
+	}
+	
+	this.showView = function(billId){
+		layer.open({
+			type: 2,
+			title:"账单详情",
+			area : ['800px', '500px'], //宽高
+			content: CONTEXT_PATH+"/bill/showBillView?billId="+billId+"&flag=detail" //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+		}); 
+	}
+	this.showEdit = function(billId){
+		layer.open({
+			type: 2,
+			title:"账单修改",
+			area : ['800px', '500px'], //宽高
+			content: CONTEXT_PATH+"/bill/showBillView?billId="+billId+"&flag=edit" //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+		}); 
 	}
 	
 };
 
 var billList = new BillList();
-var billListForm = layui.form; 
+//var billListForm = layui.form; 
 $(function() {
-	billListForm.render();
+	layForm.render();
 	billList.init();
 });
 

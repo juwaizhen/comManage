@@ -45,6 +45,9 @@
 			<if test="createDateEnd != null and createDateEnd !='' ">
 				<![CDATA[ AND T.C_CREATE_DATE < #{createDateEnd}]]>
 			</if>
+			<if test="billId != null and billId !='' ">
+				AND T.C_ID = #{billId}
+			</if>
 		</where>
 		<!-- <if test="startNum != null and startNum !='' and endNum != null and endNum !='' ">
 			limit #{startNum},#{endNum}
@@ -58,6 +61,35 @@
 	</select>
     
     <select id="getBillList" parameterType="java.util.Map" resultType="com.wyl.entity.BillVO" >
-		<include refid="billQryBase"></include>limit #{startNum},#{endNum}
+		<include refid="billQryBase"></include>
+		<if test="startNum != null and startNum !='' or startNum == 0 and endNum != null and endNum !='' or  endNum== 0">
+			limit #{startNum},#{endNum}
+		</if>
     </select>
+    
+    <update id="updateBillById" parameterType="java.util.Map">
+    	UPDATE T_BILL B
+    	<set>
+    		B.C_UPDATE_DATE = NOW(),
+			<if test="billTitle != null and billTitle != '' ">
+			 	B.C_TITLE = #{billTitle},
+			</if>
+			<if test="price != null and price != '' ">
+			 	B.C_PRICE = #{price},
+			</if>
+			<if test="billType != null and billType != '' ">
+			 	B.C_TYPE = #{billType},
+			</if>
+			<if test="useFor != null and useFor != '' ">
+			 	B.C_USE_FOR = #{useFor},
+			</if>
+			<if test="moneyType != null and moneyType != '' ">
+			 	B.C_MONEY_TYPE = #{moneyType},
+			</if>
+			<if test="remark != null and remark != '' ">
+			 	B.C_REMARK = #{remark},
+			</if>
+		</set>
+		WHERE C_ID = #{billId}
+    </update>
 </mapper>

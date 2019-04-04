@@ -8,4 +8,5 @@ import com.wyl.entity.BillVO;
 public interface BillMapper {
 	long getBillCount(Map<String,Object> map);
 	List<BillVO> getBillList(Map<String,Object> map);
+	void updateBillById(Map<String,Object> map);
 }

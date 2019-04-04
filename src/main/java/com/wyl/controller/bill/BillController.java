@@ -1,9 +1,12 @@
 package com.wyl.controller.bill;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +17,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wyl.controller.BaseController;
 import com.wyl.entity.BillVO;
+import com.wyl.entity.ConfigCodesVO;
 import com.wyl.entity.PageVO;
 import com.wyl.entity.ResultMap;
 import com.wyl.service.bill.IBillService;
 import com.wyl.utils.GsonUtil;
+import com.wyl.utils.NullUtil;
 import com.wyl.utils.StringUtil;
 
 @Controller
@@ -25,6 +30,9 @@ import com.wyl.utils.StringUtil;
 public class BillController extends BaseController{
 
 	private static final String BILL_LIST = "bill/billList";
+	private static final String TEMP = "bill/temp";
+	private static final String TEMP2 = "bill/temp2";
+	private static final String BILLVIEW = "bill/billView";
 	
 	@Autowired
 	private IBillService billService ;
@@ -42,34 +50,24 @@ public class BillController extends BaseController{
 	public String toLogin(Model model){
 		return BILL_LIST;
 	}
-	
-	
-	/*@RequestMapping(value="/getBillList",method=RequestMethod.POST)
-	@ResponseBody
-	public ResultMap getMenu(@RequestBody Map<String,Object> params){
-		ResultMap resultMap = new ResultMap();
-		try {
-			long totalCount = billService.getBillCount(params);
-			
-			//获得页码和每页显示数
-			int pageNo = (Integer)params.get("pageNo");
-			int pageSize = (Integer)params.get("pageSize");
-			PageVO page= new PageVO(pageNo,pageSize);
-			page.setTotalCount(totalCount);
-			params = page.buildPageParmap(params,page);
-			if(totalCount > 0) {
-				List <BillVO> billList = billService.getBillList(params);
-				page.setRecords(billList);
-			}
-			resultMap.setResultCode("0");
-			resultMap.setResultObj(page);
-		}catch(Exception e) {
-			resultMap.setResultCode("1");
-			resultMap.setResultMsg("账单查询异常："+e.getMessage());
-		}
-		
-		return resultMap;
-	}*/
+	@RequestMapping("/temp")
+	public String temp(Model model){
+		return TEMP;
+	}
+	@RequestMapping("/temp2")
+	public String temp2(Model model){
+		return TEMP2;
+	}
+	@RequestMapping("/showBillView")
+	public String showBillView(Model model,HttpServletRequest request){
+		String billId=request.getParameter("billId");
+        String flag=request.getParameter("flag");
+        System.out.println("billId is:"+billId);
+        System.out.println("flag is:"+flag);
+        model.addAttribute("billId", billId);
+        model.addAttribute("flag", flag);
+		return BILLVIEW;
+	}
 	
 	@RequestMapping(value="/getBillList",method=RequestMethod.POST)
 	@ResponseBody
@@ -104,4 +102,52 @@ public class BillController extends BaseController{
 		
 		return formatRturnForLayTable(resultMap);
 	}
+	
+	
+	/**
+	 * 根据id查询账单信息
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/getBillById",method=RequestMethod.POST)
+	@ResponseBody
+	public ResultMap getBillById(HttpServletRequest request,HttpServletResponse response,HttpSession session){
+		ResultMap resultMap = new ResultMap();
+		
+        Map<String,Object> paramMap = new HashMap<String,Object>();
+        paramMap.put("billId", request.getParameter("billId"));
+        List <BillVO> billList = billService.getBillList(paramMap);
+		if(NullUtil.isNotNull(billList)) {
+			resultMap.setResultCode("0");
+			resultMap.setResultObj(billList.get(0));
+		}else {
+			resultMap.setResultCode("-1");
+			resultMap.setResultMsg("没查到T_BILL数据信息");
+		}
+		return resultMap;
+	}
+	
+	
+	
+	@RequestMapping(value="/updateBill",method=RequestMethod.POST)
+	@ResponseBody
+	public ResultMap updateBill(HttpServletRequest request){
+		ResultMap resultMap = new ResultMap();
+		String paramsStr = request.getParameter("param");
+		Map<String,Object> params =GsonUtil.fromJsonDefault(paramsStr, Map.class);
+		
+		try {
+			billService.updateBillById(params);
+			resultMap.setResultMsg("账单修改成功");
+			resultMap.setResultCode("0");
+		}catch(Exception e) {
+			resultMap.setResultCode("1");
+			resultMap.setResultMsg("账单修改异常："+e.getMessage());
+		}
+		
+		return resultMap;
+	}
+	
 }
