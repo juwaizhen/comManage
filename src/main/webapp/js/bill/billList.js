@@ -120,7 +120,7 @@ var BillList = function(){
 		layer.open({
 			type: 2,
 			title:"账单详情",
-			area : ['800px', '500px'], //宽高
+			area : ['850px', '500px'], //宽高
 			content: CONTEXT_PATH+"/bill/showBillView?billId="+billId+"&flag=detail" //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
 		}); 
 	}
@@ -128,8 +128,12 @@ var BillList = function(){
 		layer.open({
 			type: 2,
 			title:"账单修改",
-			area : ['800px', '500px'], //宽高
-			content: CONTEXT_PATH+"/bill/showBillView?billId="+billId+"&flag=edit" //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+			area : ['850px', '500px'], //宽高
+			content: CONTEXT_PATH+"/bill/showBillView?billId="+billId+"&flag=edit", //这里content是一个URL，如果你不想让iframe出现滚动条，你还可以content: ['http://sentsin.com', 'no']
+			end: function(index, layero){
+//				弹出层销毁，调用
+				temp.qryBillList();
+			} 
 		}); 
 	}
 	

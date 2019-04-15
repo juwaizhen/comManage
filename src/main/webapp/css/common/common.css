@@ -222,3 +222,15 @@ a.a-yzm{display:inline-block;width:93px;height:23px;}
 } */
 
 .formClass{ width:80%;margin: 0 auto; }
+.main-bg{ background:#fff; border:1px solid #d3e6ea; padding:1% 15px;min-height:98%; margin-bottom:10px}
+
+/**表单详情布局增加样式 start*/
+.new-list li{float: left; width: 100%;line-height:28px;margin-bottom:10px;}
+.new-list li.wp100{width:100%;}
+.new-list li label{display: inline-block;width:100px; text-align: right;}
+.new-list li label em{color:#E64A19;}
+.new-list li label.wauto{width:auto;}
+.new-list li label.w120{width:120px !important;}
+.main-title{ height:30px; line-height:30px; border-bottom:1px solid #e6e6e6; color:#000;}
+.titHead{ border-bottom:1px solid #4284d7; padding:0 10px; color:#4284d7}
+/**表单详情布局增加样式 end*/

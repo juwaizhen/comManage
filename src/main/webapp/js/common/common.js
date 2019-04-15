@@ -1,5 +1,6 @@
 var layDate = layui.laydate;
 var layForm = layui.form; 
+var table = layui.table;
 $(function(){
 //	userxx-头部鼠标经过下拉
 	$(".user").hover(function(){

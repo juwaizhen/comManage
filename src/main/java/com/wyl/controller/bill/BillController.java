@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wyl.controller.BaseController;
+import com.wyl.entity.BillLogVO;
 import com.wyl.entity.BillVO;
-import com.wyl.entity.ConfigCodesVO;
 import com.wyl.entity.PageVO;
 import com.wyl.entity.ResultMap;
+import com.wyl.entity.UserVO;
 import com.wyl.service.bill.IBillService;
 import com.wyl.utils.GsonUtil;
 import com.wyl.utils.NullUtil;
@@ -33,6 +34,7 @@ public class BillController extends BaseController{
 	private static final String TEMP = "bill/temp";
 	private static final String TEMP2 = "bill/temp2";
 	private static final String BILLVIEW = "bill/billView";
+	private static final String BILLEDIT = "bill/billEdit";
 	
 	@Autowired
 	private IBillService billService ;
@@ -62,16 +64,19 @@ public class BillController extends BaseController{
 	public String showBillView(Model model,HttpServletRequest request){
 		String billId=request.getParameter("billId");
         String flag=request.getParameter("flag");
-        System.out.println("billId is:"+billId);
-        System.out.println("flag is:"+flag);
         model.addAttribute("billId", billId);
         model.addAttribute("flag", flag);
-		return BILLVIEW;
+        if("detail".equals(flag)){
+//        	返回详情页
+        	return BILLVIEW;
+        }
+//      返回新增修改页
+        return BILLEDIT;
 	}
 	
 	@RequestMapping(value="/getBillList",method=RequestMethod.POST)
 	@ResponseBody
-	public String getMenu(HttpServletRequest request){
+	public String getBillList(HttpServletRequest request){
 		ResultMap resultMap = new ResultMap();
 		String paramsStr = request.getParameter("param");
 		int pageNo = StringUtil.getInt(request.getParameter("page"));
@@ -135,10 +140,18 @@ public class BillController extends BaseController{
 	@ResponseBody
 	public ResultMap updateBill(HttpServletRequest request){
 		ResultMap resultMap = new ResultMap();
+		
 		String paramsStr = request.getParameter("param");
 		Map<String,Object> params =GsonUtil.fromJsonDefault(paramsStr, Map.class);
 		
+		HttpSession session = request.getSession();
+		UserVO sysUser = getSysUserInfo(session);
+		
+		params.put("updateUser", sysUser.getId());
+		
 		try {
+			//先记录历史，再更新
+			billService.addBillLog(params);
 			billService.updateBillById(params);
 			resultMap.setResultMsg("账单修改成功");
 			resultMap.setResultCode("0");
@@ -148,6 +161,49 @@ public class BillController extends BaseController{
 		}
 		
 		return resultMap;
+	}
+	
+	
+	/**
+	 * 获取账单历史信息
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/getBillLogByBillId",method=RequestMethod.POST)
+	@ResponseBody
+	public String getBillLogByBillId(HttpServletRequest request,HttpServletResponse response,HttpSession session){
+		ResultMap resultMap = new ResultMap();
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("billId", request.getParameter("billId"));
+        
+		int pageNo = StringUtil.getInt(request.getParameter("page"));
+		int pageSize = StringUtil.getInt(request.getParameter("limit"))==0?10:StringUtil.getInt(request.getParameter("limit"));
+		
+		try {
+			long totalCount = billService.getBillLogCount(params);
+			
+			//获得页码和每页显示数
+			
+			PageVO page= new PageVO(pageNo,pageSize);
+			page.setTotalCount(totalCount);
+			params = page.buildPageParmap(params,page);
+			if(totalCount > 0) {
+				List <BillLogVO> billList = billService.getBillLogList(params);
+				page.setRecords(billList);
+				resultMap.setResultObj(page);
+				resultMap.setResultMsg("查询成功");
+			}else{
+				resultMap.setResultMsg("未查询到符合条件的数据数据");
+			}
+			resultMap.setResultCode("0");
+		}catch(Exception e) {
+			resultMap.setResultCode("1");
+			resultMap.setResultMsg("账单历史查询异常："+e.getMessage());
+		}
+		
+		return formatRturnForLayTable(resultMap);
 	}
 	
 }

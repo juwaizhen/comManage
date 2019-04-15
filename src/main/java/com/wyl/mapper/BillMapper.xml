@@ -13,14 +13,17 @@
 			T.C_USE_FOR 'useFor',
 			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_USE_FOR' AND C.C_CODE = T.C_USE_FOR) 'useForName',
 			T.C_USE_PERSON 'usePerson',
+			(SELECT U.C_NAME FROM T_USER U WHERE U.C_ID = T.C_USE_PERSON) 'UsePersonName',
 			T.C_MONEY_TYPE 'moneyType',
 			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_MONEY_TYPE' AND C.C_CODE = T.C_MONEY_TYPE) 'moneyTypeName',
 			T.C_STATUS_CD 'statusCd',
 			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_STATUS_CD' AND C.C_CODE = T.C_STATUS_CD) 'statusCdName',
 			T.C_REMARK 'remark',
 			T.C_CREATE_USER 'createUser',
+			(SELECT U.C_NAME FROM T_USER U WHERE U.C_ID = T.C_CREATE_USER) 'createUserName',
 			T.C_CREATE_DATE 'createDate',
 			T.C_UPDATE_USER 'updateUser',
+			(SELECT U.C_NAME FROM T_USER U WHERE U.C_ID = T.C_UPDATE_USER) 'UpdateUserName',
 			T.C_UPDATE_DATE 'updateDate'
 		FROM T_BILL T
 		<where>
@@ -49,9 +52,32 @@
 				AND T.C_ID = #{billId}
 			</if>
 		</where>
-		<!-- <if test="startNum != null and startNum !='' and endNum != null and endNum !='' ">
-			limit #{startNum},#{endNum}
-		</if> -->
+			ORDER BY C_CREATE_DATE DESC
+	</sql>
+	
+	<sql id="billLogQryBase">
+		SELECT
+			T.C_ID 'id',
+			T.C_BILL_ID 'billId',
+			T.C_TITLE 'title',
+			T.C_PRICE 'price',
+			T.C_TYPE 'type',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_TYPE' AND C.C_CODE = T.C_TYPE) 'typeName',
+			T.C_USE_FOR 'useFor',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_USE_FOR' AND C.C_CODE = T.C_USE_FOR) 'useForName',
+			T.C_USE_PERSON 'usePerson',
+			T.C_MONEY_TYPE 'moneyType',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_MONEY_TYPE' AND C.C_CODE = T.C_MONEY_TYPE) 'moneyTypeName',
+			T.C_STATUS_CD 'statusCd',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_STATUS_CD' AND C.C_CODE = T.C_STATUS_CD) 'statusCdName',
+			T.C_REMARK 'remark',
+			T.C_UPDATE_USER 'updateUser',
+			T.C_UPDATE_DATE 'updateDate'
+		FROM T_BILL_LOG T
+		<where>
+			T.C_BILL_ID = #{billId}
+		</where>
+		ORDER BY C_UPDATE_DATE DESC
 	</sql>
 	
 	<select id="getBillCount" parameterType="java.util.Map" resultType="java.lang.Long" >
@@ -89,7 +115,54 @@
 			<if test="remark != null and remark != '' ">
 			 	B.C_REMARK = #{remark},
 			</if>
+			<if test="updateUser != null and updateUser != '' ">
+			 	B.C_UPDATE_USER = #{updateUser},
+			</if>
+			
 		</set>
 		WHERE C_ID = #{billId}
     </update>
+    
+    <insert id="addBillLog" parameterType="java.util.Map">
+		INSERT INTO T_BILL_LOG(
+			C_ID,
+			C_BILL_ID,
+			C_TITLE,
+			C_PRICE,
+			C_TYPE,
+			C_USE_FOR,
+			C_USE_PERSON,
+			C_MONEY_TYPE,
+			C_STATUS_CD,
+			C_REMARK,
+			C_UPDATE_USER,
+			C_UPDATE_DATE
+		)
+		SELECT
+			#{id},
+			T.C_ID,
+			T.C_TITLE,
+			T.C_PRICE,
+			T.C_TYPE,
+			T.C_USE_FOR,
+			T.C_USE_PERSON,
+			T.C_MONEY_TYPE,
+			T.C_STATUS_CD,
+			T.C_REMARK,
+			T.C_UPDATE_USER,
+			T.C_UPDATE_DATE
+		FROM T_BILL T WHERE T.C_ID=#{billId}
+	</insert>
+	
+	<select id="getBillLogCount" parameterType="java.util.Map" resultType="java.lang.Long" >
+		select count(1) from (
+			<include refid="billLogQryBase"></include>
+		) t
+	</select>
+	<select id="getBillLogList" parameterType="java.util.Map" resultType="com.wyl.entity.BillLogVO" >
+		<include refid="billLogQryBase"></include>
+		<if test="startNum != null and startNum !='' or startNum == 0 and endNum != null and endNum !='' or  endNum== 0">
+			limit #{startNum},#{endNum}
+		</if>
+    </select>
 </mapper>

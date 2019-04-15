@@ -1,39 +1,21 @@
 var BillView = function(){
 	var temp = this;	//当前对象
 	var currSelector = null;
-	var flag = null;
 	var billId = null;
 	/**初始化*/
 	this.init = function(){
 		currSelector = $("#billView");//获取页面选择器
-		temp.initSelect();	//初始化下拉选择
 		
-		temp.bindMethod();	//初始化页面绑定操作
-		
-		
-		
-		flag = currSelector.find("input[name=flag]").val();
 		billId = currSelector.find("input[name=billId]").val();
-		if("add" !=flag){
-			//详情，编辑页面需要初始化原始数据
-			temp.initDate();
-		}
+//		初始化账单数据
+		temp.initBillInfo();
+//		查询账单历史信息
+		temp.initBillLog();
 	};
 	
-//	初始化下拉选择
-	this.initSelect = function(){
-//		初始化收支类型
-		util.initConfigCodesSelect(currSelector.find("select[name=billType]"),"C_TYPE","T_BILL","TYPE1");
-//		初始化用途
-		util.initConfigCodesSelect(currSelector.find("select[name=useFor]"),"C_USE_FOR","T_BILL","TYPE1");
-//		初始化支付方式
-		util.initConfigCodesSelect(currSelector.find("select[name=moneyType]"),"C_MONEY_TYPE","T_BILL","TYPE1");
-		
-		layForm.render();//表单样式修改
-	}
-	
 //	初始化数据
-	this.initDate = function(){
+	this.initBillInfo = function(){
+		var html = [];
 		var param = {
 				"billId":billId
 		}
@@ -46,25 +28,17 @@ var BillView = function(){
 				if(result.resultCode == "0"){
 					if(!util.isNull(result.resultObj)){
 						//拼数据
+						html.push("<ul class='new-list mt10'>");
 						var data = result.resultObj;
-						currSelector.find("input[name=billTitle]").val(data.title);
-						currSelector.find("select[name=billType]").val(data.type);
-						currSelector.find("select[name=useFor]").val(data.useFor);
-						currSelector.find("select[name=moneyType]").val(data.moneyType);
-						currSelector.find("input[name=price]").val(data.price);
-						currSelector.find("textarea[name=remark]").val(data.remark);
-						
-						if("detail" == flag){
-							//详情，需要把操作都置为只读
-							currSelector.find("select[name=billType]").attr("disabled","true");
-							currSelector.find("select[name=useFor]").attr("disabled","true");
-							currSelector.find("select[name=moneyType]").attr("disabled","true");
-							currSelector.find("input[name=billTitle]").attr("readonly","true");
-							currSelector.find("input[name=price]").attr("readonly","true");
-							currSelector.find("textarea[name=remark]").attr("readonly","true");
-						}
-						
-						layForm.render();//表单样式修改
+						html.push("<li class='col-4'><label>标题：</label>"+util.setValue(data.title)+"</li>");
+						html.push("<li class='col-4'><label>收支类型：</label>"+util.setValue(data.typeName)+"</li>");
+						html.push("<li class='col-4'><label>资金用途：</label>"+util.setValue(data.useForName)+"</li>");
+						html.push("<li class='col-4'><label>支付方式：</label>"+util.setValue(data.moneyTypeName)+"</li>");
+						html.push("<li class='col-4'><label>金额：</label>"+util.setValue(data.price)+"</li>");
+						html.push("<li class='col-4'><label>账单状态：</label>"+util.setValue(data.statusCdName)+"</li>");
+						html.push("<li class='col-12'><label>备注：</label>"+util.setValue(data.remark)+"</li>");
+						html.push("<div class='clear'></div></ul>");
+						$("#billInfo").html(html.join(""));
 					}
 				}else{
 					showMes.fAlert(result.resultMsg);
@@ -76,38 +50,44 @@ var BillView = function(){
 		});
 	}
 	
-	
-	//初始化绑定事件
-	this.bindMethod = function(){
-		layForm.on('submit(formBillView)', function(data){
-			
-		    layer.alert(JSON.stringify(data.field));
-		    var param = {
-		    	"param":JSON.stringify(data.field)
-		    };
-		    
-		    $.ajax({
-				type:"post",
-				url:CONTEXT_PATH+"/bill/updateBill",
-				data:param,
-				async:false,
-				success:function(result){
-					if(result.resultCode == "0"){
-						showMes.tAlert(result.resultMsg);
-					}else{
-						showMes.fAlert(result.resultMsg);
-					}
-				},
-				error:function(e){
-					showMes.fAlert('修改账单异常!'+e);
-				}
-			});
-		    
-		    return false;
-		  });
+//	账单历史信息
+	this.initBillLog = function(){
+		var param = {
+				"billId":billId
+		}
+		
+		table.render({
+			elem: '#billLogListTable',
+            url: CONTEXT_PATH+"/bill/getBillLogByBillId",
+            method:"post",
+            where:param,
+            size: 'sm',
+            loading: true,
+            cols: [[
+            	{field: 'title', title: '标题'},
+            	{field: 'typeName', title: '收支类型'},
+            	{field: 'useForName', title: '资金用途'},
+            	{field: 'usePerson', title: '使用人'},
+            	{field: 'moneyTypeName', title: '支付方式'},
+            	{field: 'price', title: '金额'},
+            	{field: 'statusCdName', title: '状态'},
+            	{field: 'updateDate', title: '创建时间'},
+            	{field: 'remark', title: '备注'}
+             ]],
+             page:{
+            	 layout	:	['count', 'prev', 'page', 'next'],
+            	 theme	:	'#1E9FFF',
+            	 jump:function (obj,first) {
+                 	debugger;
+                     if(!first){
+                         curnum = obj.curr;
+                         limitcount = obj.limit;
+                         productsearch(productGroupId,curnum,limitcount);
+                     }
+                 }
+             },
+        });
 	}
-	
-	
 };
 
 var billList = new BillView();
