@@ -2,18 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wyl.mapper.UserMapper">
-    <!-- <typeAlias alias="UserVO" type="com.wyl.entity.UserVO" />
-    	
-	<resultMap id="UserMap" class="UserVO">
-	
-		<result property="accNum" column="ACCNUM" />
-		<result property="password" column="PASSWORD" />
-		
-	</resultMap> -->
-    
-   <!--  <select id="qryUserByAccNum" parameterType="java.lang.String" resultType="java.lang.Integer" >
-    	select count(1) from staff t where t.staff_id = #{accNum}
-    </select> -->
+    <sql id="userQryBase">
+		SELECT 
+		A.C_ID 'id',
+		A.C_NAME 'name',
+		A.C_ACC_NUM 'accNum',
+		A.C_PASSWORD 'passWord',
+		A.C_PHOTO 'photo',
+		A.C_STATUS_CD 'statusCd',
+		(SELECT T.C_CODE_NAME FROM T_CONFIG_CODES T WHERE T.C_CODE = A.C_STATUS_CD AND T.C_TABLE_NAME='T_USER' AND T.C_COLUMN_NAME='C_STATUS_CD' AND T.C_CODE_TYPE='TYPE1') 'statusCdName',
+		A.C_CREATE_USER 'createUser',
+		(SELECT CONCAT(T1.C_NAME,"[",T1.C_ACC_NUM,"]") FROM T_USER T1 WHERE T1.C_ID = C_CREATE_USER) 'createUserName',
+		DATE_FORMAT(A.C_CREATE_DATE,'%Y-%m-%d %H:%i:%s') createDate,
+		A.C_UPDATE_USER 'updateUser',
+		(SELECT CONCAT(T1.C_NAME,"[",T1.C_ACC_NUM,"]") FROM T_USER T1 WHERE T1.C_ID = C_UPDATE_USER) 'updateUserName',
+		DATE_FORMAT(A.C_UPDATE_DATE,'%Y-%m-%d %H:%i:%s') updateDate
+		FROM T_USER a
+		<where>
+			<if test="name != null and name !='' ">
+				AND C_NAME LIKE CONCAT(CONCAT('%',#{name}),'%')
+			</if>
+			<if test="accNum != null and accNum !='' ">
+				AND C_ACC_NUM = #{accNum}
+			</if>
+			<if test="createDateStart != null and createDateStart !='' ">
+				<![CDATA[ AND C_CREATE_DATE >= createDateStart]]>
+			</if>
+			<if test="createDateEnd != null and createDateEnd !='' ">
+				<![CDATA[ AND C_CREATE_DATE < #{createDateEnd}]]>
+			</if>
+			<if test="id != null and id !='' ">
+				AND C_ID = #{id}
+			</if>
+		</where>
+		order by C_STATUS_CD, C_CREATE_DATE desc
+	</sql>
     
     
 	<select id="qryUserByAccNum" parameterType="java.lang.String" resultType="com.wyl.entity.UserVO" >
@@ -27,4 +50,106 @@
     	where C_ACC_NUM = #{accNum}
     		and C_STATUS_CD = 0
     </select>
+    
+    <select id="getUserCount" parameterType="java.util.Map" resultType="java.lang.Long" >
+		select count(1) from (
+			<include refid="userQryBase"></include>
+		) t
+	</select>
+    
+    <select id="getUserList" parameterType="java.util.Map" resultType="com.wyl.entity.UserVO" >
+		<include refid="userQryBase"></include>
+		<if test="startNum != null and startNum !='' or startNum == 0 and endNum != null and endNum !='' or  endNum== 0">
+			limit #{startNum},#{endNum}
+		</if>
+    </select>
+    
+    <update id="updateUserById" parameterType="java.util.Map">
+    	update t_user
+    	<set>
+    		<if test="passWord != null and passWord != '' ">
+    			C_PASSWORD = #{passWord},
+    		</if>
+    		<if test="photo != null and photo != '' ">
+    			C_PHOTO = #{photo},
+    		</if>
+    		<if test="statusCd != null and statusCd != '' ">
+    			C_STATUS_CD = #{statusCd},
+    		</if>
+    		<if test="updateUser != null and updateUser != '' ">
+    			C_UPDATE_USER = #{updateUser},
+    		</if>
+    			C_UPDATE_DATE = NOW(),
+    	</set>
+    	where C_ID = #{id}
+    </update>
+    
+    <insert id="insertUser" parameterType="java.util.Map">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			C_ID,
+			C_NAME,
+			C_ACC_NUM,
+			C_PASSWORD,
+			<if test="photo != null and photo != ''">
+				C_PHOTO,
+			</if>
+			C_STATUS_CD,
+			C_CREATE_USER,
+			C_CREATE_DATE,
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+	    	#{id},
+			#{name},
+			#{accNum},
+			#{passWord},
+			<if test="photo != null and photo != ''">
+				#{photo},
+			</if>
+			#{statusCd},
+			#{createUser},
+			now(),
+		</trim>
+    </insert>
+    
+    
+    <select id="getUserRoleRelList" parameterType="java.lang.String" resultType="java.util.Map" >
+    	SELECT
+			ROLE.C_ID "id",
+			ROLE.C_NAME "name",
+			ROLE.C_REMARK "remark",
+			IF(REL.C_ID,true,false) "LAY_CHECKED"
+		FROM
+			T_ROLE ROLE
+			LEFT JOIN T_REL_USER_ROLE REL ON ROLE.C_ID = REL.C_ROLE_ID
+			AND REL.C_USER_ID = #{userId}
+			WHERE 1 = 1
+			<if test="statusCd != null and statusCd !='' ">
+				AND ROLE.C_SATTUS_CD = #{statusCd}
+			</if>
+    </select>
+    
+ 	<delete id="deleteUserRoleRel" parameterType="java.util.Map">
+    	DELETE FROM T_REL_USER_ROLE WHERE C_USER_ID = #{userId}
+	</delete>
+  
+  
+   <insert id="insertUserRoleRel" parameterType="java.util.Map">
+		insert into t_rel_user_role
+			(C_ID,
+			C_USER_ID,
+			C_ROLE_ID,
+			C_STATUS_CD,
+			C_CREATE_USER,
+			C_CREATE_DATE
+			)
+		values
+			(#{id},
+			#{userId},
+			#{roleId},
+			#{statusCd},
+			#{createUser},
+			now()
+			)
+    </insert>
 </mapper>
