@@ -26,7 +26,20 @@ public class BaseController{
 		
 		String returnStr = "{\"code\":"+code+",\"msg\":\""+msg+"\",\"count\":"+count+",\"data\":"+date+"}";
 //		String returnStr = "{\"code\":"+code+",\"msg\":\"\",\"count\":"+count+",\"data\":"+date+"}";
-		System.out.println("|"+returnStr+"|");
+		System.out.println("含分页|"+returnStr+"|");
+		return returnStr;
+	}
+	
+	public String formatRturnForLayTableNoPage(ResultMap resultMap){
+		String returnStr ="";
+		String code = resultMap.getResultCode();
+		String msg = resultMap.getResultMsg();
+		String date = null;
+		if(NullUtil.isNotNull(resultMap.getResultObj())) {
+			date =GsonUtil.toJson(resultMap.getResultObj());
+		};
+		returnStr = "{\"code\":"+code+",\"msg\":\""+msg+"\",\"data\":"+date+"}";
+		System.out.println("无分页|"+returnStr+"|");
 		return returnStr;
 	}
 	

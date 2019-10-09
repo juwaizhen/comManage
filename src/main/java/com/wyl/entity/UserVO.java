@@ -16,10 +16,13 @@ public class UserVO  implements Serializable{
 	private String accNum;		//账号
 	private String password;	//密码
 	private String statusCd;	//状态
+	private String statusCdName;	//状态
 	private String createUser;	//创建人
-	private Date createDate;	//创建时间
+	private String createUserName;	//创建人名称
+	private String createDate;	//创建时间
 	private String updateUser;	//修改人
-	private Date updateDate;	//修改时间
+	private String updateUserName;	//修改人名称
+	private String updateDate;	//修改时间
 	
 	private List<PrivilegeVO> pList;	//用户权限
 	public String getId() {
@@ -58,10 +61,10 @@ public class UserVO  implements Serializable{
 	public void setCreateUser(String createUser) {
 		this.createUser = createUser;
 	}
-	public Date getCreateDate() {
+	public String getCreateDate() {
 		return createDate;
 	}
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
 	public String getUpdateUser() {
@@ -70,10 +73,10 @@ public class UserVO  implements Serializable{
 	public void setUpdateUser(String updateUser) {
 		this.updateUser = updateUser;
 	}
-	public Date getUpdateDate() {
+	public String getUpdateDate() {
 		return updateDate;
 	}
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
 	public List<PrivilegeVO> getpList() {
@@ -82,9 +85,24 @@ public class UserVO  implements Serializable{
 	public void setpList(List<PrivilegeVO> pList) {
 		this.pList = pList;
 	}
-	
-	
-	
+	public String getStatusCdName() {
+		return statusCdName;
+	}
+	public void setStatusCdName(String statusCdName) {
+		this.statusCdName = statusCdName;
+	}
+	public String getCreateUserName() {
+		return createUserName;
+	}
+	public void setCreateUserName(String createUserName) {
+		this.createUserName = createUserName;
+	}
+	public String getUpdateUserName() {
+		return updateUserName;
+	}
+	public void setUpdateUserName(String updateUserName) {
+		this.updateUserName = updateUserName;
+	}
 	
 	
 }

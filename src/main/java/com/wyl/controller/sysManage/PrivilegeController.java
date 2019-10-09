@@ -1,4 +1,4 @@
-package com.wyl.controller.privilege;
+package com.wyl.controller.sysManage;
 
 import java.util.List;
 

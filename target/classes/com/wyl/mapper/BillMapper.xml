@@ -5,47 +5,79 @@
     
 	<sql id="billQryBase">
 		SELECT
-			C_ID 'id',
-			C_TITLE 'title',
-			C_PRICE 'price',
-			C_TYPE 'type',
-			C_USE_FOR 'useFor',
-			C_USE_PERSON 'usePerson',
-			C_MONEY_TYPE 'moneyType',
-			C_STATUS_CD 'statusCd',
-			C_REMARK 'remark',
-			C_CREATE_USER 'createUser',
-			C_CREATE_DATE 'createDate',
-			C_UPDATE_USER 'updateUser',
-			C_UPDATE_DATE 'updateDate'
-		FROM T_BILL
+			T.C_ID 'id',
+			T.C_TITLE 'title',
+			T.C_PRICE 'price',
+			T.C_TYPE 'type',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_TYPE' AND C.C_CODE = T.C_TYPE) 'typeName',
+			T.C_USE_FOR 'useFor',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_USE_FOR' AND C.C_CODE = T.C_USE_FOR) 'useForName',
+			T.C_USE_PERSON 'usePerson',
+			(SELECT U.C_NAME FROM T_USER U WHERE U.C_ID = T.C_USE_PERSON) 'UsePersonName',
+			T.C_MONEY_TYPE 'moneyType',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_MONEY_TYPE' AND C.C_CODE = T.C_MONEY_TYPE) 'moneyTypeName',
+			T.C_STATUS_CD 'statusCd',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_STATUS_CD' AND C.C_CODE = T.C_STATUS_CD) 'statusCdName',
+			T.C_REMARK 'remark',
+			T.C_CREATE_USER 'createUser',
+			(SELECT U.C_NAME FROM T_USER U WHERE U.C_ID = T.C_CREATE_USER) 'createUserName',
+			T.C_CREATE_DATE 'createDate',
+			T.C_UPDATE_USER 'updateUser',
+			(SELECT U.C_NAME FROM T_USER U WHERE U.C_ID = T.C_UPDATE_USER) 'UpdateUserName',
+			T.C_UPDATE_DATE 'updateDate'
+		FROM T_BILL T
 		<where>
 			<if test="title != null and title !='' ">
-				AND C_TITLE LIKE CONCAT(CONCAT('%',#{title}),'%')
+				AND T.C_TITLE LIKE CONCAT(CONCAT('%',#{title}),'%')
 			</if>
 			<if test="type != null and type !='' ">
-				AND C_TYPE = #{type}
+				AND T.C_TYPE = #{type}
 			</if>
 			<if test="useFor != null and useFor !='' ">
-				AND C_USE_FOR = #{useFor}
+				AND T.C_USE_FOR = #{useFor}
 			</if>
 			<if test="moneyType != null and moneyType !='' ">
-				AND C_MONEY_TYPE = #{moneyType}
+				AND T.C_MONEY_TYPE = #{moneyType}
 			</if>
 			<if test="statusCd != null and statusCd !='' ">
-				AND C_STATUS_CD = #{statusCd}
+				AND T.C_STATUS_CD = #{statusCd}
 			</if>
 			<if test="createDateStart != null and createDateStart !='' ">
-				<![CDATA[ AND C_CREATE_DATE >= createDateStart]]>
+				<![CDATA[ AND T.C_CREATE_DATE >= createDateStart]]>
 			</if>
 			<if test="createDateEnd != null and createDateEnd !='' ">
-				<![CDATA[ AND C_CREATE_DATE < #{createDateEnd}]]>
+				<![CDATA[ AND T.C_CREATE_DATE < #{createDateEnd}]]>
 			</if>
-			<if test="startNum != null and startNum !='' and endNum != null and endNum !='' ">
-				limit startNum,endNum
+			<if test="billId != null and billId !='' ">
+				AND T.C_ID = #{billId}
 			</if>
-			
 		</where>
+			ORDER BY C_CREATE_DATE DESC
+	</sql>
+	
+	<sql id="billLogQryBase">
+		SELECT
+			T.C_ID 'id',
+			T.C_BILL_ID 'billId',
+			T.C_TITLE 'title',
+			T.C_PRICE 'price',
+			T.C_TYPE 'type',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_TYPE' AND C.C_CODE = T.C_TYPE) 'typeName',
+			T.C_USE_FOR 'useFor',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_USE_FOR' AND C.C_CODE = T.C_USE_FOR) 'useForName',
+			T.C_USE_PERSON 'usePerson',
+			T.C_MONEY_TYPE 'moneyType',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_MONEY_TYPE' AND C.C_CODE = T.C_MONEY_TYPE) 'moneyTypeName',
+			T.C_STATUS_CD 'statusCd',
+			(SELECT C_CODE_NAME FROM T_CONFIG_CODES C WHERE C.C_TABLE_NAME = 'T_BILL'  AND C.C_STATUS_CD = 0 AND C.C_COLUMN_NAME = 'C_STATUS_CD' AND C.C_CODE = T.C_STATUS_CD) 'statusCdName',
+			T.C_REMARK 'remark',
+			T.C_UPDATE_USER 'updateUser',
+			T.C_UPDATE_DATE 'updateDate'
+		FROM T_BILL_LOG T
+		<where>
+			T.C_BILL_ID = #{billId}
+		</where>
+		ORDER BY C_UPDATE_DATE DESC
 	</sql>
 	
 	<select id="getBillCount" parameterType="java.util.Map" resultType="java.lang.Long" >
@@ -56,5 +88,81 @@
     
     <select id="getBillList" parameterType="java.util.Map" resultType="com.wyl.entity.BillVO" >
 		<include refid="billQryBase"></include>
+		<if test="startNum != null and startNum !='' or startNum == 0 and endNum != null and endNum !='' or  endNum== 0">
+			limit #{startNum},#{endNum}
+		</if>
+    </select>
+    
+    <update id="updateBillById" parameterType="java.util.Map">
+    	UPDATE T_BILL B
+    	<set>
+    		B.C_UPDATE_DATE = NOW(),
+			<if test="billTitle != null and billTitle != '' ">
+			 	B.C_TITLE = #{billTitle},
+			</if>
+			<if test="price != null and price != '' ">
+			 	B.C_PRICE = #{price},
+			</if>
+			<if test="billType != null and billType != '' ">
+			 	B.C_TYPE = #{billType},
+			</if>
+			<if test="useFor != null and useFor != '' ">
+			 	B.C_USE_FOR = #{useFor},
+			</if>
+			<if test="moneyType != null and moneyType != '' ">
+			 	B.C_MONEY_TYPE = #{moneyType},
+			</if>
+			<if test="remark != null and remark != '' ">
+			 	B.C_REMARK = #{remark},
+			</if>
+			<if test="updateUser != null and updateUser != '' ">
+			 	B.C_UPDATE_USER = #{updateUser},
+			</if>
+			
+		</set>
+		WHERE C_ID = #{billId}
+    </update>
+    
+    <insert id="addBillLog" parameterType="java.util.Map">
+		INSERT INTO T_BILL_LOG(
+			C_ID,
+			C_BILL_ID,
+			C_TITLE,
+			C_PRICE,
+			C_TYPE,
+			C_USE_FOR,
+			C_USE_PERSON,
+			C_MONEY_TYPE,
+			C_STATUS_CD,
+			C_REMARK,
+			C_UPDATE_USER,
+			C_UPDATE_DATE
+		)
+		SELECT
+			#{id},
+			T.C_ID,
+			T.C_TITLE,
+			T.C_PRICE,
+			T.C_TYPE,
+			T.C_USE_FOR,
+			T.C_USE_PERSON,
+			T.C_MONEY_TYPE,
+			T.C_STATUS_CD,
+			T.C_REMARK,
+			T.C_UPDATE_USER,
+			T.C_UPDATE_DATE
+		FROM T_BILL T WHERE T.C_ID=#{billId}
+	</insert>
+	
+	<select id="getBillLogCount" parameterType="java.util.Map" resultType="java.lang.Long" >
+		select count(1) from (
+			<include refid="billLogQryBase"></include>
+		) t
+	</select>
+	<select id="getBillLogList" parameterType="java.util.Map" resultType="com.wyl.entity.BillLogVO" >
+		<include refid="billLogQryBase"></include>
+		<if test="startNum != null and startNum !='' or startNum == 0 and endNum != null and endNum !='' or  endNum== 0">
+			limit #{startNum},#{endNum}
+		</if>
     </select>
 </mapper>
